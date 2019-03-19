@@ -5,6 +5,10 @@ import { openCard } from "../actions/postActions";
 import { compareCards } from "../actions/postActions";
 import { clearOpened } from "../actions/postActions";
 import { shuffle } from "../actions/postActions";
+// dasdasdasda 
+
+
+
 
 class Game extends React.Component {
   constructor(props) {
