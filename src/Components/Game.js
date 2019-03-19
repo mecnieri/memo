@@ -1,14 +1,13 @@
 import React from "react";
 import { TweenMax } from "gsap/TweenMax";
 import { connect } from "react-redux";
-import { openCard } from "../actions/postActions";
-import { compareCards } from "../actions/postActions";
-import { clearOpened } from "../actions/postActions";
-import { shuffle } from "../actions/postActions";
-// dasdasdasda 
 
-
-
+import {
+  openCard,
+  compareCards,
+  clearOpened,
+  shuffle
+} from "../actions/postActions";
 
 class Game extends React.Component {
   constructor(props) {
@@ -23,13 +22,16 @@ class Game extends React.Component {
       rotationY: 0,
       backgroundColor: "white"
     });
-    if (!!this.element1) {
-      this.element2 = e.target;
-    } else {
+
+    if(this.element1 === null && this.element2 === null) {
       this.element1 = e.target;
-    }
+     } else if (this.element2 === null) {
+       this.element2 = e.target;
+     } 
+
+    //  console.log(this.element2,this.element2)
   };
-  // shuffle
+
   componentWillMount = () => {
     // shuffle starting cards
     this.props.shuffle();
@@ -37,8 +39,7 @@ class Game extends React.Component {
 
   componentDidUpdate = () => {
     let opened = this.props.opened;
-    console.log(36, this.props);
-
+    // compare two opened card
     if (opened.length === 2) {
       if (opened[0].value === opened[1].value) {
         this.element1 = null;
