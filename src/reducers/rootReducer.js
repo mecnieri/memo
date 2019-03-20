@@ -28,6 +28,8 @@ const rootReducer = (state = initState, action) => {
     };
   }
   if (action.type === "CLOSE_CARDS") {
+
+  
     const cards = state.cards.map((item, j) => {
       if (
         item.index === state.opened[0].index ||

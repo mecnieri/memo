@@ -24,10 +24,10 @@ class Game extends React.Component {
       backgroundColor: "white"
     });
 
-    if (this.element1 === null && this.element2 === null) {
-      this.element1 = e.target;
-    } else if (this.element2 === null) {
+    if (!!this.element1) {
       this.element2 = e.target;
+    } else {
+      this.element1 = e.target;
     }
   };
 
@@ -35,10 +35,8 @@ class Game extends React.Component {
     let opened = this.props.opened;
     // compare two opened card
     if (opened.length === 2) {
-      if (opened[0].value === opened[1].value) {
-        this.element1 = null;
-        this.element2 = null;
-      } else {
+      // if first opened card doesn't match with second, close both
+      if (opened[0].value !== opened[1].value) {
         TweenMax.to(this.element1, 1, {
           rotationY: 180,
           backgroundColor: "black",
@@ -49,14 +47,13 @@ class Game extends React.Component {
           backgroundColor: "black",
           delay: 1
         });
-        this.element1 = null;
-        this.element2 = null;
         setTimeout(() => {
           this.props.closeCards();
         }, 10);
       }
-        
-
+      //clear these elements and opened array
+      this.element1 = null;
+      this.element2 = null;
       setTimeout(() => {
         this.props.clearOpened();
       }, 30);
@@ -75,7 +72,6 @@ class Game extends React.Component {
           <div
             onClick={e => this.openItem(e, i, item)}
             key={item.index}
-            //  style = {item.isOpen ? {backgroundColor: "white"} : {backgroundColor: "black"}}
             style={{
               transform: "rotateY(180deg)"
             }}
@@ -88,6 +84,7 @@ class Game extends React.Component {
   }
 }
 
+// create REDUX state
 const mapStateProps = state => {
   return {
     cards: state.cards,
@@ -95,6 +92,7 @@ const mapStateProps = state => {
   };
 };
 
+// create functions for REDUX
 const mapDispatchToProps = dispatch => {
   return {
     openCard: (index, i) => {
