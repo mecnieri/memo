@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import {
   openCard,
-  compareCards,
+  closeCards,
   clearOpened,
   shuffle
 } from "../actions/postActions";
@@ -15,6 +15,7 @@ class Game extends React.Component {
     this.element1 = null;
     this.element2 = null;
   }
+
   openItem = (e, i, item) => {
     this.props.openCard(item.index, i);
 
@@ -23,18 +24,11 @@ class Game extends React.Component {
       backgroundColor: "white"
     });
 
-    if(this.element1 === null && this.element2 === null) {
+    if (this.element1 === null && this.element2 === null) {
       this.element1 = e.target;
-     } else if (this.element2 === null) {
-       this.element2 = e.target;
-     } 
-
-    //  console.log(this.element2,this.element2)
-  };
-
-  componentWillMount = () => {
-    // shuffle starting cards
-    this.props.shuffle();
+    } else if (this.element2 === null) {
+      this.element2 = e.target;
+    }
   };
 
   componentDidUpdate = () => {
@@ -45,24 +39,33 @@ class Game extends React.Component {
         this.element1 = null;
         this.element2 = null;
       } else {
+        TweenMax.to(this.element1, 1, {
+          rotationY: 180,
+          backgroundColor: "black",
+          delay: 1
+        });
+        TweenMax.to(this.element2, 1, {
+          rotationY: 180,
+          backgroundColor: "black",
+          delay: 1
+        });
+        this.element1 = null;
+        this.element2 = null;
         setTimeout(() => {
-          this.props.compareCards();
-          TweenMax.to(this.element1, 1, {
-            rotationY: 180,
-            backgroundColor: "black"
-          });
-          TweenMax.to(this.element2, 1, {
-            rotationY: 180,
-            backgroundColor: "black"
-          });
-          this.element1 = null;
-          this.element2 = null;
-        }, 1059);
+          this.props.closeCards();
+        }, 10);
       }
+        
+
       setTimeout(() => {
         this.props.clearOpened();
-      }, 1080);
+      }, 30);
     }
+  };
+
+  // shuffle starting cards
+  componentWillMount = () => {
+    this.props.shuffle();
   };
 
   render() {
@@ -97,8 +100,8 @@ const mapDispatchToProps = dispatch => {
     openCard: (index, i) => {
       dispatch(openCard(index, i));
     },
-    compareCards: () => {
-      dispatch(compareCards());
+    closeCards: () => {
+      dispatch(closeCards());
     },
     clearOpened: () => {
       dispatch(clearOpened());

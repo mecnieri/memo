@@ -5,9 +5,9 @@ export const openCard = (index, i) => {
   };
 };
 
-export const compareCards = () => {
+export const closeCards = () => {
   return {
-    type: "COMPARE_CARDS"
+    type: "CLOSE_CARDS"
   };
 };
 

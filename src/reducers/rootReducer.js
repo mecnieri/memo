@@ -6,31 +6,28 @@ const initState = {
 };
 
 const rootReducer = (state = initState, action) => {
-  if (state.opened.length < 2) {
-    if (action.type === "OPEN_CARD") {
-      const cards = state.cards.map((item, j) => {
-        if (j === action.i) {
-          return {
-            value: item.value,
-            index: item.index,
-            isOpen: !item.isOpen
-          };
-        } else {
-          return {
-            value: item.value,
-            index: item.index,
-            isOpen: item.isOpen
-          };
-        }
-      });
-      return {
-        cards,
-        opened: [...state.opened, state.cards[action.i]]
-      };
-    }
+  if (action.type === "OPEN_CARD") {
+    const cards = state.cards.map((item, j) => {
+      if (j === action.i) {
+        return {
+          value: item.value,
+          index: item.index,
+          isOpen: !item.isOpen
+        };
+      } else {
+        return {
+          value: item.value,
+          index: item.index,
+          isOpen: item.isOpen
+        };
+      }
+    });
+    return {
+      cards,
+      opened: [...state.opened, state.cards[action.i]]
+    };
   }
-
-  if (action.type === "COMPARE_CARDS") {
+  if (action.type === "CLOSE_CARDS") {
     const cards = state.cards.map((item, j) => {
       if (
         item.index === state.opened[0].index ||
@@ -40,7 +37,7 @@ const rootReducer = (state = initState, action) => {
           value: item.value,
           index: item.index,
           isOpen: false
-        };
+        }
       } else {
         return {
           value: item.value,
@@ -63,7 +60,6 @@ const rootReducer = (state = initState, action) => {
   }
   if (action.type === "SHUFFLE") {
     content.sort(() => Math.random() - 0.5);
-
     return {
       cards: content,
       opened: []
